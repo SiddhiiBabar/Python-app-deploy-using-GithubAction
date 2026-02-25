@@ -10,21 +10,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Checkout the Repository
+
+      # 1️⃣ Checkout Repository
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2️⃣ Setupp Python
+      # 2️⃣ Setup Python
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      # 3️⃣ Run Python to Generate index.html
+      # 3️⃣ Generate index.html using Python
       - name: Generate index.html
         run: |
           python app.py
-          ls -la   # Debug: confirm file exists
+          ls -la
 
       # 4️⃣ Configure AWS Credentials
       - name: Configure AWS credentials
@@ -34,7 +35,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      # 5️⃣ Upload Only index.html to S3
+      # 5️⃣ Upload index.html to S3
       - name: Upload to S3
         run: |
           aws s3 cp index.html s3://${{ secrets.S3_BUCKET }}/index.html \
@@ -42,4 +43,4 @@ jobs:
 
       # 6️⃣ Success Message
       - name: Deployment complete
-        run: echo "Successfully deployed to S3 🚀"
+        run: echo "Successfully deployed to AWS S3 🚀"
