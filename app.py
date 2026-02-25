@@ -5,8 +5,7 @@ html_content = """
   <title>Python App Deployment</title>
 </head>
 <body>
-  <h1>🚀 Python App Successfully Deployed using GitHub Actions!</h1>
-  <p>CI/CD Pipeline working perfectly.</p>
+  <h1> Python App Successfully Deployed using GitHub Actions!</h1> 
 </body>
 </html>
 """
