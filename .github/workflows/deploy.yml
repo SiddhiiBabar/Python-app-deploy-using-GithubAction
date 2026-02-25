@@ -37,4 +37,4 @@ jobs:
             --content-type text/html
 
       - name: Deployment complete
-        run: echo "Successfully deployed to AWS S3 🚀"
+        run: echo "Successfully deployed AWS S3 using GithubAction..!!!!"
