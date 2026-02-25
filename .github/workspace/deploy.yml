@@ -1,4 +1,4 @@
-name: Deploy to S3 using Python
+name: Deploy to AWS S3 (Static Website)
 
 on:
   push:
@@ -10,32 +10,36 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 1️⃣ Checkout the Repository
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Python
+      # 2️⃣ Setupp Python
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      - name: Install dependencies
+      # 3️⃣ Run Python to Generate index.html
+      - name: Generate index.html
         run: |
-          pip install boto3
+          python app.py
+          ls -la   # Debug: confirm file exists
 
-      - name: Generate index.html using Python
-        run: python app.py
-
+      # 4️⃣ Configure AWS Credentials
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+          aws-region: ${{ secrets.AWS_REGION }}
 
+      # 5️⃣ Upload Only index.html to S3
       - name: Upload to S3
         run: |
           aws s3 cp index.html s3://${{ secrets.S3_BUCKET }}/index.html \
             --content-type text/html
 
+      # 6️⃣ Success Message
       - name: Deployment complete
-        run: echo "Python app deployed successfully 🚀"
+        run: echo "Successfully deployed to S3 🚀"
